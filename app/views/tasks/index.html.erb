@@ -1,0 +1,18 @@
+<h1>Your TODO LIST</h1>
+
+<ul>
+	<% if @tasks_should_work_on %>
+	<% @tasks_should_work_on.each do |task| %>
+	<li><%= task.name %></li>
+	<% end %>
+	<% end %>
+</ul>
+
+<ul>
+	<% if @tasks_done %>
+	<% @tasks_done.each do |task| %>
+	<li><%= task.name %></li>
+	<% end %>
+	<% end %>
+</ul>
+
