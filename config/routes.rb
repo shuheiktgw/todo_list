@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  devise_for :users
+  root to: 'static_pages#index'
+
+  get 'static_pages/show'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
