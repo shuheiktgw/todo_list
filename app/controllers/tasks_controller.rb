@@ -1,40 +1,34 @@
 class TasksController < ApplicationController
 	def index
-		@user = current_user
-		@tasks = @user.tasks
-		@tasks_should_work_on = @user.tasks.should_work_on.order(urgency: :DESC)
-		@taske_done           = @user.tasks.done
-	end
-
-	def new
 		@task = Task.new
+		@tasks_should_work_on = current_user.tasks.should_work_on.order(urgency: :DESC, importance: :DESC)
+		@tasks_rescently_done           = current_user.tasks.rescently_done
 	end
 
 	def create
 		@task = Task.new(task_params)
 		@task.user = current_user
 		if @task.save
-			redirect_to static_pages_show_url, notice: "新しいタスクを作成しました"
+			redirect_to tasks_url, notice: "新しいタスクを作成しました"
 		else
-			render "new"
+			render "index"
 		end
 	end
 
-	def edit
-		@task = current_user.tasks.find(params[:id])
-	end
-
 	def update
-		@task = current_user.tasks.find[params[:id]]
-		@task.assign_attributes(task_params)
+		@task = current_user.tasks.find(params[:id])
+		@task.update_attribute(:status, 2)
 		if @task.save
-			redirect_to static_pages_show_url, notice: "タスクを更新しました"
+			redirect_to tasks_url, notice: "タスクを完了しました"
 		else
-			render "edit"
+			redirect_to tasks_url, notice: "タスクの完了登録に失敗しました"
 		end
 	end
 
 	def destroy
+		@task = current_user.tasks.find(params[:id])
+		@task.destroy
+		redirect_to tasks_url, notice: "タスクを削除しました"
 	end
 
 	private

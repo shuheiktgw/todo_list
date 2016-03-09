@@ -1,12 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
   root to: 'static_pages#index'
-
-  get 'static_pages/show'
-
-  resources :users
-
-  resources :tasks
+  resources :tasks, except: [:show, :new, :edit]
 
 
 

@@ -1,7 +1,8 @@
 class Task < ActiveRecord::Base
 	belongs_to :user
 
-	scope :should_work_on, ->{where("status <> ?", "3")}
-	scope :done, -> {where("status: ? AND ? < updated_at", 3, 5.days.ago)}
+	validates :name, presence: true
 
+	scope :should_work_on, ->{where("status <> ?", "2")}
+	scope :rescently_done, -> {where(["status = ? and updated_at > ?", 2, 3.days.ago])}
 end

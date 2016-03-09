@@ -1,18 +1,70 @@
 <h1>Your TODO LIST</h1>
 
+<h3>TODOの新規登録</h3>
+
+<%= render "shared/errors", obj: @task %>
+<%= form_for @task do |f| %>
+  <table>
+    <tr>
+    	<td><%= f.label :name %></td>
+    </tr>
+    <tr>
+    	<td><%= f.text_field :name %></td>
+    </tr>
+
+    <% priority_options = [["Low", 0],["Middle", 1],["High", 2]] %>
+    <tr>
+    	<td><%= f.label :urgency %></td>
+    </tr>
+    <tr>
+    	<td><%= f.select :urgency, priority_options %></td>
+    </tr>
+
+    <tr>
+    	<td><%= f.label :importance %></td>
+    </tr>
+    <tr>
+    	<td><%= f.select :importance, priority_options %></td>
+    </tr>
+
+    <% status_options = [["Not Yet", 0],["WIP", 1],["Done", 2]] %>
+    <tr>
+    	<td><%= f.label :status %></td>
+    </tr>
+    <tr>
+    	<td><%= f.select :status, status_options %></td>
+    </tr>
+
+    <tr>
+    	<td><%= f.submit "新しいタスクを登録する" %></td>
+    </tr>
+  </table>
+<% end %>
+
+
+
+<h3>TODOs</h3>
 <ul>
 	<% if @tasks_should_work_on %>
-	<% @tasks_should_work_on.each do |task| %>
-	<li><%= task.name %></li>
-	<% end %>
+		<% @tasks_should_work_on.each do |task| %>
+			<li><%= task.name %></li>
+			<p><%= translate_urgency_importance(task.urgency)%> | <%=translate_urgency_importance(task.importance)%> | <%=translate_status(task.status)%> | <%= link_to "完了", task, method: :patch %> | <%= link_to "削除", task, method: :delete, data: {confirm: "本当に削除しますか?"} %></p>
+		<% end %>
+	<% else %>
+		<p>TODOはすべて完了しています</p>
 	<% end %>
 </ul>
 
+
+<h3>TODOs Rescently Done</h3>
 <ul>
-	<% if @tasks_done %>
-	<% @tasks_done.each do |task| %>
-	<li><%= task.name %></li>
-	<% end %>
+	<% if @tasks_rescently_done %>
+		<% @tasks_rescently_done.each do |task| %>
+			<li><%= task.name %></li>
+			<p><%= translate_urgency_importance(task.urgency)%> | <%=translate_urgency_importance(task.importance)%> | <%= translate_status(task.status) %>
+		<% end %>
+	<% else %>
+		<p>最近完了したTODOはありません</p>
 	<% end %>
 </ul>
 
