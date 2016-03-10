@@ -12,22 +12,23 @@
     	<td><%= f.text_field :name %></td>
     </tr>
 
-    <% priority_options = [["Low", 0],["Middle", 1],["High", 2]] %>
+    <% urgency_options = [["Low", :urgency_low],["Middle", :urgency_middle],["High", :urgency_high]] %>
     <tr>
     	<td><%= f.label :urgency %></td>
     </tr>
     <tr>
-    	<td><%= f.select :urgency, priority_options %></td>
+    	<td><%= f.select :urgency, urgency_options %></td>
     </tr>
 
+    <% importance_options = [["Low", :importance_low],["Middle", :importance_middle],["High", :importance_high]] %>
     <tr>
     	<td><%= f.label :importance %></td>
     </tr>
     <tr>
-    	<td><%= f.select :importance, priority_options %></td>
+    	<td><%= f.select :importance, importance_options %></td>
     </tr>
 
-    <% status_options = [["Not Yet", 0],["WIP", 1],["Done", 2]] %>
+    <% status_options = [["Not Yet", :not_yet],["WIP", :wip],["Done", :done]] %>
     <tr>
     	<td><%= f.label :status %></td>
     </tr>
