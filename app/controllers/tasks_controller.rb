@@ -35,7 +35,7 @@ class TasksController < ApplicationController
 	def done_registration
 		params["tasks"].each do |checkbox|
 			if checkbox.size==2
-				done_task=Task.find(checkbox[":id"])
+				done_task=current_user.tasks.find(checkbox[":id"])
 				done_task.status = :done
 				done_task.save
 			end
