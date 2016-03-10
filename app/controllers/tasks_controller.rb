@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
 	def index
 		@task = Task.new
-		@tasks_should_work_on = current_user.tasks.should_work_on.order(urgency: :DESC, importance: :DESC)
+		@tasks_should_work_on = current_user.tasks.should_work_on.order(urgency: :DESC, importance: :DESC).page(params[:page])
 		@tasks_rescently_done           = current_user.tasks.rescently_done
 	end
 

@@ -44,27 +44,28 @@
 
 
 <h3>TODOs</h3>
-<ul>
-	<% if @tasks_should_work_on %>
-		<% @tasks_should_work_on.each do |task| %>
-			<li><%= task.name %></li>
-			<p><%= translate_urgency_importance(task.urgency)%> | <%=translate_urgency_importance(task.importance)%> | <%=translate_status(task.status)%> | <%= link_to "完了", task, method: :patch %> | <%= link_to "削除", task, method: :delete, data: {confirm: "本当に削除しますか?"} %></p>
-		<% end %>
-	<% else %>
-		<p>TODOはすべて完了しています</p>
-	<% end %>
-</ul>
-
+<% if @tasks_should_work_on %>
+    <ul>
+    	<% @tasks_should_work_on.each do |task| %>
+    		<li><%= task.name %></li>
+    		<p><%= translate_urgency_importance(task.urgency)%> | <%=translate_urgency_importance(task.importance)%> | <%=translate_status(task.status)%> | <%= link_to "完了", task, method: :patch %> | <%= link_to "削除", task, method: :delete, data: {confirm: "本当に削除しますか?"} %></p>
+    	<% end %>
+    </ul>
+    <%= paginate @tasks_should_work_on %>
+<% else %>
+    <p>TODOはありません</p>
+<% end %>
 
 <h3>TODOs Rescently Done</h3>
-<ul>
-	<% if @tasks_rescently_done %>
-		<% @tasks_rescently_done.each do |task| %>
-			<li><%= task.name %></li>
-			<p><%= translate_urgency_importance(task.urgency)%> | <%=translate_urgency_importance(task.importance)%> | <%= translate_status(task.status) %>
-		<% end %>
-	<% else %>
-		<p>最近完了したTODOはありません</p>
-	<% end %>
-</ul>
+<% if @tasks_rescently_done %>
+    <ul>
+    	<% @tasks_rescently_done.each do |task| %>
+    		<li><%= task.name %></li>
+    		<p><%= translate_urgency_importance(task.urgency)%> | <%=translate_urgency_importance(task.importance)%> | <%= translate_status(task.status) %>
+    	<% end %>
+    </ul>
+<% else %>
+	<p>最近完了したTODOはありません</p>
+<% end %>
+
 
