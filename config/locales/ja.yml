@@ -1,4 +1,18 @@
 ja:
+  enums:
+    task:
+      urgency:
+        urgency_low: "Low"
+        urgency_middle: "Middle"
+        urgency_high: "Hugh"
+      importance:
+        importance_low: "Low"
+        importance_low: "Middle"
+        importance_low: "High"
+      status:
+        not_yet: "Not Yet"
+        wip: "WIP"
+        done: "Done"
   activerecord:
     errors:
       messages:
