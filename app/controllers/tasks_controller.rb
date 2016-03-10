@@ -32,6 +32,18 @@ class TasksController < ApplicationController
 		redirect_to tasks_url, notice: "タスクを削除しました"
 	end
 
+	def done_registration
+		params["tasks"].each do |checkbox|
+			if checkbox.size==2
+				done_task=Task.find(checkbox[":id"])
+				done_task.status = :done
+				done_task.save
+			end
+		end
+		redirect_to tasks_url, notice: "タスクを完了しました"
+	end
+
+
 	private
 		def task_params
 			params.require(:task).permit(:name, :urgency, :importance, :status)
