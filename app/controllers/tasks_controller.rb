@@ -18,6 +18,7 @@ class TasksController < ApplicationController
 	end
 
 	def update
+		@task = current_user.tasks.find(params[:id])
 		@task.status = :done
 		if @task.save
 			redirect_to tasks_url, notice: "タスクを完了しました"

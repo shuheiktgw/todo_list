@@ -11,6 +11,13 @@
     <tr>
     	<td><%= f.text_field :name %></td>
     </tr>
+    <tr>
+        <td><%= f.label :description %></td>
+    </tr>
+    <tr>
+        <td><%= f.text_area :description %></td>
+    </tr>
+
 
     <tr>
     	<td><%= f.label :urgency %></td>
@@ -46,6 +53,7 @@
     <ul>
     	<% @tasks_should_work_on.each do |task| %>
     		<li><%= task.name %></li>
+            <p><%= task.description %></p>
     		<p><%= task.urgency_i18n %> | <%=task.importance_i18n%> | <%=task.status_i18n%> | <%= link_to "完了", task, method: :patch %> | <%= link_to "削除", task, method: :delete, data: {confirm: "本当に削除しますか?"} %></p>
     	<% end %>
     </ul>
@@ -59,6 +67,7 @@
     <ul>
     	<% @tasks_rescently_done.each do |task| %>
     		<li><%= task.name %></li>
+            <p><%= task.description %></p>
     		<p><%= task.urgency_i18n%> | <%=task.importance_i18n%> | <%= task.status_i18n %>
     	<% end %>
     </ul>
