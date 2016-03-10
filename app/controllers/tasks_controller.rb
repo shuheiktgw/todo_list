@@ -1,4 +1,6 @@
 class TasksController < ApplicationController
+	before_action :set_task, only: [:update, :destroy]
+
 	def index
 		@task = Task.new
 		@tasks_should_work_on = current_user.tasks.should_work_on.order(urgency: :DESC, importance: :DESC).page(params[:page])
@@ -11,13 +13,12 @@ class TasksController < ApplicationController
 		if @task.save
 			redirect_to tasks_url, notice: "新しいタスクを作成しました"
 		else
-			render "index"
+			render :index
 		end
 	end
 
 	def update
-		@task = current_user.tasks.find(params[:id])
-		@task.update_attribute(:status, 2)
+		@task.status = :done
 		if @task.save
 			redirect_to tasks_url, notice: "タスクを完了しました"
 		else
@@ -26,7 +27,6 @@ class TasksController < ApplicationController
 	end
 
 	def destroy
-		@task = current_user.tasks.find(params[:id])
 		@task.destroy
 		redirect_to tasks_url, notice: "タスクを削除しました"
 	end
@@ -34,6 +34,10 @@ class TasksController < ApplicationController
 	private
 		def task_params
 			params.require(:task).permit(:name, :urgency, :importance, :status)
+		end
+
+		def set_task
+			@task = current_user.tasks.find(params[:id])
 		end
 
 

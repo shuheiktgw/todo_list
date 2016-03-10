@@ -48,7 +48,7 @@
     <ul>
     	<% @tasks_should_work_on.each do |task| %>
     		<li><%= task.name %></li>
-    		<p><%= translate_urgency_importance(task.urgency)%> | <%=translate_urgency_importance(task.importance)%> | <%=translate_status(task.status)%> | <%= link_to "完了", task, method: :patch %> | <%= link_to "削除", task, method: :delete, data: {confirm: "本当に削除しますか?"} %></p>
+    		<p><%= task.urgency %> | <%=task.importance%> | <%=task.status%> | <%= link_to "完了", task, method: :patch %> | <%= link_to "削除", task, method: :delete, data: {confirm: "本当に削除しますか?"} %></p>
     	<% end %>
     </ul>
     <%= paginate @tasks_should_work_on %>
@@ -61,7 +61,7 @@
     <ul>
     	<% @tasks_rescently_done.each do |task| %>
     		<li><%= task.name %></li>
-    		<p><%= translate_urgency_importance(task.urgency)%> | <%=translate_urgency_importance(task.importance)%> | <%= translate_status(task.status) %>
+    		<p><%= task.urgency%> | <%=task.importance%> | <%= task.status %>
     	<% end %>
     </ul>
 <% else %>
