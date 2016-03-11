@@ -17,6 +17,11 @@ class TasksController < ApplicationController
 		end
 	end
 
+def update
+	@task.done!
+	redirect_to tasks_url, notice: "タスクを完了しました"
+end
+
 
 	def destroy
 		@task.destroy
