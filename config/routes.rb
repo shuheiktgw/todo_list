@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
   root to: 'static_pages#index'
-  resources :tasks, except: [:show, :new, :edit]
+  resources :tasks, onlu: [:index, :create, :destroy] do
+    collection { patch 'done_registration'}
+  end
 
 
 

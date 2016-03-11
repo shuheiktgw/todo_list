@@ -51,12 +51,16 @@
 <h3>TODOs</h3>
 <% if @tasks_should_work_on %>
     <ul>
+    <%= form_tag(done_registration_tasks_path, :method => :patch) do %>
     	<% @tasks_should_work_on.each do |task| %>
-        		<li><%= task.name %></li>
-                <p><%= task.description %></p>
-        		<p><%= task.urgency_i18n %> | <%=task.importance_i18n%> | <%=task.status_i18n%> | <%= link_to "完了", task, method: :patch %> | <%= link_to "削除", task, method: :delete, data: {confirm: "本当に削除しますか?"} %></p>
+        	<li><%= check_box_tag("checked_id[]", task.id) %><%= task.name %></li>
+            <p><%= task.description %></p>
+        	<p><%= task.urgency_i18n %> | <%=task.importance_i18n%> | <%=task.status_i18n%> |
+               <%= link_to "削除", task, method: :delete, data: {confirm: "本当に削除しますか?"} %></p>
     	<% end %>
     </ul>
+    <%= submit_tag '完了登録する'%>
+    <% end %>
     <%= paginate @tasks_should_work_on %>
 <% else %>
     <p>TODOはありません</p>
