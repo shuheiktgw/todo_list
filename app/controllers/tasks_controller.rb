@@ -17,15 +17,6 @@ class TasksController < ApplicationController
 		end
 	end
 
-	def update
-		@task = current_user.tasks.find(params[:id])
-		@task.status = :done
-		if @task.save
-			redirect_to tasks_url, notice: "タスクを完了しました"
-		else
-			redirect_to tasks_url, notice: "タスクの完了登録に失敗しました"
-		end
-	end
 
 	def destroy
 		@task.destroy
@@ -33,20 +24,20 @@ class TasksController < ApplicationController
 	end
 
 	def done_registration
-		params["tasks"].each do |checkbox|
-			if checkbox.size==2
-				done_task=current_user.tasks.find(checkbox[":id"])
-				done_task.status = :done
-				done_task.save
+		if params["checked_id"].nil?
+			redirect_to tasks_url, notice: "完了登録するタスクを選択してください"
+		else
+			params["checked_id"].each do |id|
+				current_user.tasks.find(id).done!
 			end
+			redirect_to tasks_url, notice: "タスクを完了しました"
 		end
-		redirect_to tasks_url, notice: "タスクを完了しました"
 	end
 
 
 	private
 		def task_params
-			params.require(:task).permit(:name, :urgency, :importance, :status)
+			params.require(:task).permit(:name, :urgency, :importance, :status, :description)
 		end
 
 		def set_task
