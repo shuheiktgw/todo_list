@@ -17,10 +17,10 @@ class TasksController < ApplicationController
 		end
 	end
 
-def update
-	@task.done!
-	redirect_to tasks_url, notice: "タスクを完了しました"
-end
+	def update
+		@task.done!
+		redirect_to tasks_url, notice: "タスクを完了しました"
+	end
 
 
 	def destroy
@@ -32,10 +32,14 @@ end
 		if params["checked_id"].nil?
 			redirect_to tasks_url, notice: "完了登録するタスクを選択してください"
 		else
-			params["checked_id"].each do |id|
-				current_user.tasks.find(id).done!
+			Task.transaction do
+				params["checked_id"].each do |id|
+					current_user.tasks.find(id).done!
+				end
 			end
-			redirect_to tasks_url, notice: "タスクを完了しました"
+			redirect_to tasks_url, notice: "タスクを完了登録しました"
+		#rescue
+			#redirect_to tasks_url, notice: "タスクの完了登録に失敗しました"
 		end
 	end
 
