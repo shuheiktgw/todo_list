@@ -32,14 +32,8 @@ class TasksController < ApplicationController
 		if params["checked_id"].nil?
 			redirect_to tasks_url, notice: "完了登録するタスクを選択してください"
 		else
-			Task.transaction do
-				params["checked_id"].each do |id|
-					current_user.tasks.find(id).done!
-				end
-			end
+			Task.done_multiple(current_user, params["checked_id"])
 			redirect_to tasks_url, notice: "タスクを完了登録しました"
-		#rescue
-			#redirect_to tasks_url, notice: "タスクの完了登録に失敗しました"
 		end
 	end
 
