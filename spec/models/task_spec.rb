@@ -18,16 +18,18 @@ describe Task do
 	describe "#done_multiple"
 		it "3つのタスクを完了登録すること" do
 			Task.done_multiple(@user, [@task1.id, @task2.id, @task3.id])
-			expect(@task1.done? && @task2.done? && @task3.done?).to be true
+			expect(@task1.reload.done?).to be true
+			expect(@task2.reload.done?).to be true
+			expect(@task3.reload.done?).to be true
 		end
 
-		it "3つのタスクのうち,2番めに無効な値を入れてタランザクションさせること" do
-			@task2.name=""
-			Task.done_multiple(@user, [@task1.id, @task2.id, @task3.id])
-			expect(@task1.done? || @task2.done? || @task3.done?).to be false
+		it "3つのタスクのうち,2番めに無効な値を入れてトランザクションさせること" do
+			@task2.id=0
+			expect{Task.done_multiple(@user, [@task1.id, @task2.id, @task3.id])}.to raise_error
+			expect(@task1.reload.done?).to be false
+			expect(@task3.reload.done?).to be false
 		end
 	end
-end
 
 
 
