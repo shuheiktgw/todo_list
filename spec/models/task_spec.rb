@@ -14,7 +14,8 @@ describe Task do
 	end
 
 	describe "#done_multiple"
-		xit "成功すればすべて完了になる" do
+		it "成功すればすべて完了になる" do
+			p @task1
 			Task.done_multiple(@user, [@task1.id, @task2.id, @task3.id])
 			expect(@task1.reload.done?).to be true
 			expect(@task2.reload.done?).to be true
