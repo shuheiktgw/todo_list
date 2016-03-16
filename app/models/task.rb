@@ -1,5 +1,6 @@
 class Task < ActiveRecord::Base
 	belongs_to :user
+	belongs_to :group
 
 	validates :name, presence: true
 	validates :description, length: {maximum: 150}
@@ -12,6 +13,7 @@ class Task < ActiveRecord::Base
 
 	scope :should_work_on, ->{ where.not(status: statuses[:done]) }
 	scope :rescently_done, ->{ done.where(arel_table[:updated_at].gt(3.days.ago)) }
+
 
 	def self.done_multiple(user, ids)
 		self.transaction do

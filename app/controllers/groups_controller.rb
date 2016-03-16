@@ -15,6 +15,11 @@ class GroupsController < ApplicationController
   end
 
   def show
+    current_group = Group.find(params[:id])
+    @task = Task.new
+
+    @tasks_should_work_on = current_group.tasks.should_work_on.order(urgency: :DESC, importance: :DESC).page(params[:page])
+    @tasks_rescently_done = current_group.tasks.rescently_done
   end
 
   def edit
