@@ -5,7 +5,10 @@ Rails.application.routes.draw do
     collection { patch 'done_registration'}
   end
 
-  resources :groups
+  resources :groups do
+    member {patch "member_register", "member_deregister"}
+    member {get "member_search", "members"}
+  end
 
 
 
