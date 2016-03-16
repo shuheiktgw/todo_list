@@ -42,11 +42,20 @@ class GroupsController < ApplicationController
   end
 
   def member_search
-
   end
 
   def member_register
-    current_group.members << @member
+    emails = Array.new(params[:members][:email].strip.split(','))
+    if emails.any? && check_emails(emails) #ここはあとで個別にemailの真偽値を判定,真のもののみ返すように改善
+      User.transaction do
+        emails.each do |email|
+          current_group.members << User.find_by(email: email)
+        end
+      end
+      redirect_to current_group, notice: "ユーザーの登録に成功しました"
+    else
+      redirect_to :back, notice: "ユーザーの登録に失敗しました"
+    end
   end
 
   def member_deregister
@@ -66,4 +75,9 @@ class GroupsController < ApplicationController
     def current_group
       current_group = Group.find(params[:id])
     end
+
+    def check_emails(emails)
+      emails.all?{|email| User.exists?(email: email)}
+    end
+
 end
