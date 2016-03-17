@@ -2,13 +2,11 @@ require 'rails_helper'
 
 describe Task do
 		let(:user)  {create(:user)}
-		let(:task1) {create(:task)}
-		let(:task2) {create(:task)}
-		let(:task3) {create(:task)}
+		let(:task1) {create(:task, user: user)}
+		let(:task2) {create(:task, user: user)}
+		let(:task3) {create(:task, user: user)}
 
 	describe "#done_regsitration" do
-		let(:task1) {create(:task)}
-
 		it "タスクを完了登録すること" do
 			task1.done!
 			expect(task1.done?).to be true
