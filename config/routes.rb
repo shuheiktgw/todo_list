@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users
+
   root to: 'static_pages#index'
   resources :tasks, only: [:index, :create, :update, :destroy] do
     collection { patch 'done_registration'}
   end
 
   resources :groups do
-    member {patch "member_register", "member_deregister"}
+    member {patch "member_register", "member_deregister", "member_admin", "member_deadmin"}
     member {get "member_search", "members"}
   end
 

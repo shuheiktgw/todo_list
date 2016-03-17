@@ -1,5 +1,9 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy]
+  before_action :admin_required, only: [:edit, :update, :destroy, :member_search, :member_register, :member_deregister, :member_admin, :member_deadmin]
+  before_action :member_only
+  helper_method :group_admin?
+
 
   def new
     @group = Group.new
@@ -9,6 +13,9 @@ class GroupsController < ApplicationController
     @group = Group.new(group_params)
     if @group.save
       @group.members << current_user
+      group_admin = current_user.group_members.find_by(group_id: @group) #要リファクタリング
+      group_admin.admin! #要リファクタリング
+
       redirect_to @group, notice: "新しいグループを作成しました"
     else
       redirect_to :back, notice: "グループの作成に失敗しました"
@@ -63,6 +70,16 @@ class GroupsController < ApplicationController
     redirect_to :back, notice: "メンバーの登録を解除しました"
   end
 
+  def member_admin
+    current_group.group_members.find_by(user_id: params[:member_id]).admin!
+    redirect_to :back, notice: "メンバーを管理者登録しました"
+  end
+
+  def member_deadmin
+    current_group.group_members.find_by(user_id: params[:member_id]).operator!
+    redirect_to :back, notice: "メンバーの管理者権限を削除しました"
+  end
+
   private
     def group_params
       params.require(:group).permit(:name, :description, :created_by)
@@ -78,6 +95,18 @@ class GroupsController < ApplicationController
 
     def check_emails(emails)
       emails.all?{|email| User.exists?(email: email)}
+    end
+
+    def group_admin?
+      current_user.group_members.find_by(group_id: current_group).admin?
+    end
+
+    def admin_required
+      raise '403 Forbidden' unless group_admin?
+    end
+
+    def member_only
+      raise '403 Forbidden' unless current_group.group_members.find_by(user_id: current_user)
     end
 
 end

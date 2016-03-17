@@ -1,6 +1,16 @@
 <h1>グループメンバー一覧</h1>
-	<ul>
-		<% @members.each do |member| %>
-		<li><%= member.email %> | <%= link_to 'メンバー登録解除', member_deregister_group_path(member_id: member.id), method: :patch%></li>
+<ul>
+	<% @members.each do |member| %>
+		<li><%= member.email %>
+		<% if group_admin? %>
+			 |
+			<%= link_to 'メンバー登録解除', member_deregister_group_path(member_id: member.id), method: :patch%>
+			 |
+				<% if member.group_members.find_by(group_id: params[:id]).role == 'admin'%>
+					<%= link_to '管理者登録解除', member_deadmin_group_path(member_id: member.id), method: :patch%>
+				<% else %>
+					<%= link_to '管理者登録', member_admin_group_path(member_id: member.id), method: :patch%>
+				<% end %>
 		<% end %>
-	</ul>
+	<% end %>
+</ul>
