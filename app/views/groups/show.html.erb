@@ -3,47 +3,8 @@
 <h2>グループTODOの登録</h2>
 <%= render "shared/errors", obj: @task %>
 <%= form_for @task do |f| %>
-	<%= f.hidden_field :group_id, value: params[:id] %>
-  <table>
-    <tr>
-    	<td><%= f.label :name %></td>
-    </tr>
-    <tr>
-    	<td><%= f.text_field :name %></td>
-    </tr>
-    <tr>
-        <td><%= f.label :description %></td>
-    </tr>
-    <tr>
-        <td><%= f.text_area :description %></td>
-    </tr>
-
-
-    <tr>
-    	<td><%= f.label :urgency %></td>
-    </tr>
-    <tr>
-    	<td><%= f.select :urgency, Task.urgencies_i18n.invert %></td>
-    </tr>
-
-    <tr>
-    	<td><%= f.label :importance %></td>
-    </tr>
-    <tr>
-    	<td><%= f.select :importance, Task.importances_i18n.invert %></td>
-    </tr>
-
-    <tr>
-    	<td><%= f.label :status %></td>
-    </tr>
-    <tr>
-    	<td><%= f.select :status, Task.statuses_i18n.invert %></td>
-    </tr>
-
-    <tr>
-    	<td><%= f.submit "新しいタスクを登録する" %></td>
-    </tr>
-  </table>
+  <%= f.hidden_field :group_id, value: params[:id] %>
+  <%= render "shared/task_registration_form", f: f %>
 <% end %>
 
 <h3>グループTODOs</h3>

@@ -11,6 +11,7 @@ class GroupsController < ApplicationController
 
   def create
     @group = Group.new(group_params)
+    @group.created_by = current_user.id
     if @group.save
       current_user.groups << @group
       current_user.group_members.find_by(group_id: @group).admin! #要リファクタリング
@@ -75,7 +76,7 @@ class GroupsController < ApplicationController
 
   private
     def group_params
-      params.require(:group).permit(:name, :description, :created_by)
+      params.require(:group).permit(:name, :description)
     end
 
     def set_group

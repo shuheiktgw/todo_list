@@ -5,6 +5,5 @@
 		<tr><td><%= f.label :description %></td></tr>
 		<tr><td><%= f.text_area :description %></td></tr>
 	</table>
-	<%= f.hidden_field :created_by, value: current_user.id %>
 	<%= f.submit %>
 <% end %>

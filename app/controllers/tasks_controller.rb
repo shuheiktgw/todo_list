@@ -3,8 +3,8 @@ class TasksController < ApplicationController
 
 	def index
 		@task = Task.new
-		@tasks_should_work_on = current_user.tasks.should_work_on.where(group_id: nil).order(urgency: :DESC, importance: :DESC).page(params[:page])
-		@tasks_rescently_done = current_user.tasks.rescently_done.where(group_id: nil)
+		@tasks_should_work_on = current_user.tasks.should_work_on.individual_tasks.order(urgency: :DESC, importance: :DESC).page(params[:page])
+		@tasks_rescently_done = current_user.tasks.rescently_done.individual_tasks
 	end
 
 	def create
