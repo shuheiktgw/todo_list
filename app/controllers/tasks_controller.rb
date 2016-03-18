@@ -10,7 +10,6 @@ class TasksController < ApplicationController
 	def create
 		@task = Task.new(task_params)
 		@task.user = current_user
-		path = get_path
 		if @task.save
 				redirect_to :back, notice: "新しいタスクを作成しました"
 		else

@@ -1,7 +1,7 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy]
   before_action :admin_required, only: [:edit, :update, :destroy, :member_search, :member_register, :member_deregister, :member_admin, :member_deadmin]
-  before_action :member_only
+  before_action :member_only, except: [:new, :create]
   helper_method :group_admin?
 
 
@@ -12,10 +12,8 @@ class GroupsController < ApplicationController
   def create
     @group = Group.new(group_params)
     if @group.save
-      @group.members << current_user
-      group_admin = current_user.group_members.find_by(group_id: @group) #要リファクタリング
-      group_admin.admin! #要リファクタリング
-
+      current_user.groups << @group
+      current_user.group_members.find_by(group_id: @group).admin! #要リファクタリング
       redirect_to @group, notice: "新しいグループを作成しました"
     else
       redirect_to :back, notice: "グループの作成に失敗しました"
@@ -41,7 +39,7 @@ class GroupsController < ApplicationController
 
   def destroy
     @group.destroy
-    redirect_to current_user, notice: "グループ情報の更新に失敗しました"
+    redirect_to current_user, notice: "グループを削除しました"
   end
 
   def members
@@ -52,16 +50,11 @@ class GroupsController < ApplicationController
   end
 
   def member_register
-    emails = Array.new(params[:members][:email].strip.split(','))
-    if emails.any? && check_emails(emails) #ここはあとで個別にemailの真偽値を判定,真のもののみ返すように改善
-      User.transaction do
-        emails.each do |email|
-          current_group.members << User.find_by(email: email)
-        end
-      end
-      redirect_to current_group, notice: "ユーザーの登録に成功しました"
+    emails = Array(params[:members][:email].strip.split(','))
+    if registered_emails = User.register_from_emails(emails)
+      redirect_to @group, notice: "#{registered_emails}をメンバー登録しました"
     else
-      redirect_to :back, notice: "ユーザーの登録に失敗しました"
+      redirect_to :back, notice: "有効なemailアドレスを入力してください"
     end
   end
 
@@ -91,10 +84,6 @@ class GroupsController < ApplicationController
 
     def current_group
       current_group = Group.find(params[:id])
-    end
-
-    def check_emails(emails)
-      emails.all?{|email| User.exists?(email: email)}
     end
 
     def group_admin?
