@@ -1,15 +1,13 @@
-<h1>Your TODO LIST</h1>
+<h1><%= @group.name %></h1>
 
-<h3>TODOの新規登録</h3>
-
+<h2>グループTODOの登録</h2>
 <%= render "shared/errors", obj: @task %>
 <%= form_for @task do |f| %>
-  <%= render 'shared/task_registration_form', f: f %>
+  <%= f.hidden_field :group_id, value: params[:id] %>
+  <%= render "shared/task_registration_form", f: f %>
 <% end %>
 
-
-
-<h3>TODOs</h3>
+<h3>グループTODOs</h3>
 <% if @tasks_should_work_on %>
     <%= form_tag(done_registration_tasks_path, :method => :patch) do %>
         <ul>
@@ -17,7 +15,7 @@
             	<li><%= check_box_tag("checked_id[]", task.id) %><%= task.name %></li>
                 <p><%= task.description %></p>
             	<p><%= task.urgency_i18n %> | <%=task.importance_i18n%> | <%=task.status_i18n%> |
-                   <%= link_to "削除", task, method: :delete, data: {confirm: "本当に削除しますか?"} %></p>
+                   <%= link_to "削除", task, method: :delete, data: {confirm: "本当に削除しますか?"}%></p>
         	<% end %>
         </ul>
     <%= submit_tag '完了登録する'%>
@@ -27,7 +25,8 @@
     <p>TODOはありません</p>
 <% end %>
 
-<h3>TODOs Rescently Done</h3>
+
+<h3>グループTODOs Rescently Done</h3>
 <% if @tasks_rescently_done %>
     <ul>
     	<% @tasks_rescently_done.each do |task| %>
@@ -39,5 +38,3 @@
 <% else %>
 	<p>最近完了したTODOはありません</p>
 <% end %>
-
-

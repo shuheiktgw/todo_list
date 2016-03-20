@@ -1,0 +1,5 @@
+<h1>メンバー登録</h1>
+<%= form_tag(member_register_group_path, :method => :patch) do %>
+<%= text_field :members, :email, size: 80, placeholder: 'Emailアドレスをカンマ区切りで入力してください' %><br>
+<%= submit_tag "登録する"%>
+<% end %>

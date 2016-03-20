@@ -8,5 +8,13 @@
 				<%= link_to "サインイン", new_user_registration_path %> |
 				<%= link_to "ログイン", new_user_session_path %>
 			<% end %>
+			<% if params[:controller] == 'groups' && params[:action] != 'new' %>
+				 | <%= link_to "メンバー一覧", :members_group %>
+				<% if current_group.admin?(current_user) %>
+					| <%= link_to "メンバー登録", :member_search_group %>
+					| <%= link_to "グループ編集", :edit_group %>
+					| <%= link_to "グループ削除", :groups, method: :delete, data: {confirm: "本当に削除しますか?"} %>
+				<% end %>
+			<% end %>
 	</nav>
 </header>
