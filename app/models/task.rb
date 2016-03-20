@@ -13,8 +13,8 @@ class Task < ActiveRecord::Base
 	scope :should_work_on, ->{ where.not(status: statuses[:done]) }
 	scope :rescently_done, ->{ done.where(arel_table[:updated_at].gt(3.days.ago)) }
 
-	def Task.done_multiple(user, ids)
-		Task.transaction do
+	def self.done_multiple(user, ids)
+		self.transaction do
 			ids.each do |id|
 				user.tasks.find(id).done!
 			end
