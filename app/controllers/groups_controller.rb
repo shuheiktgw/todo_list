@@ -11,10 +11,7 @@ class GroupsController < ApplicationController
 
   def create
     @group = Group.new(group_params)
-    @group.created_by = current_user.id
-    current_user.groups << @group
-    if @group.save
-      current_user.group_members.create!(group: @group, role: :admin)
+    if Group.create_a_new_group(@group)
       redirect_to @group, notice: "新しいグループを作成しました"
     else
       redirect_to :back, notice: "グループの作成に失敗しました"
@@ -84,7 +81,7 @@ class GroupsController < ApplicationController
     end
 
     def set_group
-      @group = Group.find(params[:id])
+      @group ||= Group.find(params[:id])
     end
 
     def current_group
