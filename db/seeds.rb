@@ -1,3 +1,11 @@
+10.times do |i|
+	User.create(
+		email: "example#{i}@example.com",
+		password: "password"
+	end
+end
+
+
 100.times do |i|
 	Task.create(
 		user_id: 1,

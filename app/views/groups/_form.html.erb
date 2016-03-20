@@ -1,0 +1,9 @@
+<%= form_for @group do |f| %>
+	<table>
+		<tr><td><%= f.label :name %></td></tr>
+		<tr><td><%= f.text_field :name %></td></tr>
+		<tr><td><%= f.label :description %></td></tr>
+		<tr><td><%= f.text_area :description %></td></tr>
+	</table>
+	<%= f.submit %>
+<% end %>
