@@ -2,7 +2,7 @@ class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy]
   before_action :admin_required, only: [:edit, :update, :destroy, :member_search, :member_register, :member_deregister, :member_admin, :member_deadmin]
   before_action :member_only, except: [:new, :create]
-  helper_method :group_admin?
+  helper_method :current_group
 
 
   def new
