@@ -7,26 +7,26 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  def self.register_from_emails(emails)
+  def self.register_from_emails(emails,current_group)
     if emails.any?
       valid_emails = check_emails(emails)
       if valid_emails.any?
       	transaction do
 	        valid_emails.each do |email|
-	          current_group.members << find_by(email: email)
+	          current_group.members << User.find_by(email: email)
 	        end
+	        valid_emails
 	      end
-	      valid_emails
 	    else
-	      false
+	      nil
       end
     else
-      false
+      nil
     end
   end
 
   private
-	  def check_emails(emails)
+	  def self.check_emails(emails)
 	  	emails.reduce([]) do |valid_emails, email|
 	  		valid_emails << email if exists?(email: email)
 	  		valid_emails

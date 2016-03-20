@@ -52,8 +52,12 @@ class GroupsController < ApplicationController
 
   def member_register
     emails = Array(params[:members][:email].strip.split(','))
-    if registered_emails = User.register_from_emails(emails)
-      redirect_to @group, notice: "#{registered_emails}をメンバー登録しました"
+    if registered_emails = User.register_from_emails(emails, current_group)
+      if registered_emails.nil?
+        redirect_to :back, notice: "メンバーが登録に失敗しました"
+      else
+        redirect_to current_group, notice: "#{registered_emails.join(", ")}をメンバー登録しました"
+      end
     else
       redirect_to :back, notice: "有効なemailアドレスを入力してください"
     end
@@ -87,16 +91,12 @@ class GroupsController < ApplicationController
       current_group = Group.find(params[:id])
     end
 
-    def group_admin?
-      current_user.group_members.find_by(group_id: current_group).admin?
-    end
-
     def admin_required
-      raise '403 Forbidden' unless group_admin?
+      raise '403 Forbidden' unless current_group.admin?(current_user)
     end
 
     def member_only
-      raise '403 Forbidden' unless current_group.group_members.find_by(user_id: current_user)
+      raise '403 Forbidden' unless current_group.member?(current_user)
     end
 
 end

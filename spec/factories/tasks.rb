@@ -1,6 +1,6 @@
 FactoryGirl.define do
 	factory :task do
-		user_id 1
+		user
 		name "test"
 		urgency :urgency_low
 		importance :importance_low
