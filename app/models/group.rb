@@ -3,12 +3,12 @@ class Group < ActiveRecord::Base
 	has_many :group_members, dependent: :destroy
 	has_many :members, through: :group_members, source: :user
 
-	def create_a_new_group(group)
+	def self.create_a_new_group(group, current_user)
 		self.transaction do
 			group.created_by = current_user.id
 			current_user.groups << group
 	    current_user.group_members.create!(group: group, role: :admin)
-	    @group.save!
+	    group.save!
 	  end
 	  true
 	end
