@@ -3,29 +3,26 @@ class Group < ActiveRecord::Base
 	has_many :group_members, dependent: :destroy
 	has_many :members, through: :group_members, source: :user
 
-	def self.create_a_new_group(group, current_user)
+	def self.create_a_new_group(params, user)
+		group = new(params)
 		self.transaction do
-			group.created_by = current_user.id
-	    current_user.group_members.create!(group: group, role: :admin)
+			group.created_by = user.id
+	    user.group_members.create!(group: group, role: :admin)
 	    group.save!
 	  end
-	  true
+	  return group
 	end
 
-	def admin?(current_user)
-		if group_members.find_by(user_id: current_user.id)
-			group_members.find_by(user_id: current_user.id).admin?
-		else
-			false
-		end
+	def admin?(user)
+		member = group_members.find_by(user_id: user)
+		return false if member.nil?
+		member.admin?
 	end
 
-	def member?(current_user)
-		if group_members.find_by(user_id: current_user)
-			group_members.find_by(user_id: current_user.id).admin?
-		else
-			false
-		end
+	def member?(user)
+		member = group_members.find_by(user_id: user)
+		return false if member.nil?
+		member
 	end
 
 end
