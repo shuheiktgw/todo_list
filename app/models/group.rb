@@ -6,7 +6,6 @@ class Group < ActiveRecord::Base
 	def self.create_a_new_group(group, current_user)
 		self.transaction do
 			group.created_by = current_user.id
-			current_user.groups << group
 	    current_user.group_members.create!(group: group, role: :admin)
 	    group.save!
 	  end
@@ -14,11 +13,19 @@ class Group < ActiveRecord::Base
 	end
 
 	def admin?(current_user)
-		group_members.find_by(user_id: current_user.id).admin?
+		if group_members.find_by(user_id: current_user.id)
+			group_members.find_by(user_id: current_user.id).admin?
+		else
+			false
+		end
 	end
 
 	def member?(current_user)
-		group_members.find_by(user_id: current_user)
+		if group_members.find_by(user_id: current_user)
+			group_members.find_by(user_id: current_user.id).admin?
+		else
+			false
+		end
 	end
 
 end
