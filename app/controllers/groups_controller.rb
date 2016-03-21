@@ -1,8 +1,7 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy]
-  before_action :admin_required, only: [:edit, :update, :destroy, :member_search, :member_register, :member_deregister, :member_admin, :member_deadmin]
+  before_action :admin_required, only: [:edit, :update, :destroy]
   before_action :member_only, except: [:new, :create]
-  helper_method :current_group
 
 
   def new
@@ -36,43 +35,9 @@ class GroupsController < ApplicationController
 
   def destroy
     @group.destroy
-    redirect_to current_user, notice: "グループを削除しました"
+    redirect_to :new_group, notice: "グループを削除しました"
   end
 
-  def members
-    @members = current_group.members
-  end
-
-  def member_search
-  end
-
-  def member_register
-    emails = Array(params[:members][:email].strip.split(','))
-    if registered_emails = User.register_from_emails(emails, current_group)
-      if registered_emails.nil?
-        redirect_to :back, notice: "メンバーが登録に失敗しました"
-      else
-        redirect_to current_group, notice: "#{registered_emails.join(", ")}をメンバー登録しました"
-      end
-    else
-      redirect_to :back, notice: "有効なemailアドレスを入力してください"
-    end
-  end
-
-  def member_deregister
-    current_group.members.destroy(User.find(params[:member_id]))
-    redirect_to :back, notice: "メンバーの登録を解除しました"
-  end
-
-  def member_admin
-    current_group.group_members.find_by(user_id: params[:member_id]).admin!
-    redirect_to :back, notice: "メンバーを管理者登録しました"
-  end
-
-  def member_deadmin
-    current_group.group_members.find_by(user_id: params[:member_id]).operator!
-    redirect_to :back, notice: "メンバーの管理者権限を削除しました"
-  end
 
   private
     def group_params
@@ -81,18 +46,6 @@ class GroupsController < ApplicationController
 
     def set_group
       @group ||= Group.find(params[:id])
-    end
-
-    def current_group
-      Group.find(params[:id])
-    end
-
-    def admin_required
-      raise '403 Forbidden' unless current_group.admin?(current_user)
-    end
-
-    def member_only
-      raise '403 Forbidden' unless current_group.member?(current_user)
     end
 
 end
