@@ -10,7 +10,7 @@ class Group < ActiveRecord::Base
 	    user.group_members.create!(group: group, role: :admin)
 	    group.save!
 	  end
-	  return group
+	  group
 	end
 
 	def admin?(user)
