@@ -2,7 +2,7 @@
 	User.create(
 		email: "example#{i}@example.com",
 		password: "password"
-	end
+	)
 end
 
 
