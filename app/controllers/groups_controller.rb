@@ -1,4 +1,4 @@
-class GroupsController < ApplicationController
+class GroupsController < BaseGroupsController
   before_action :set_group, only: [:show, :edit, :update, :destroy]
   before_action :admin_required, only: [:edit, :update, :destroy]
   before_action :member_only, except: [:new, :create]

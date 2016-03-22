@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   resources :groups do
     resources :group_members, only: [:index, :new, :create, :destroy]
-    resource :group_admins, only: [:create, :destroy]
+    resource :group_admins, only: :update
   end
 
 

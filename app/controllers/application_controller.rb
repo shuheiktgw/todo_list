@@ -12,21 +12,4 @@ class ApplicationController < ActionController::Base
     root_path
   end
 
-  private
-
-    def current_group
-      if params[:controller] == 'groups'
-        group ||= Group.find(params[:id])
-      elsif params[:controller] == 'group_members' || params[:controller] == 'group_admins'
-        group ||= Group.find(params[:group_id])
-      end
-    end
-
-    def admin_required
-      raise '403 Forbidden' unless current_group.admin?(current_user)
-    end
-
-    def member_only
-      raise '403 Forbidden' unless current_group.member?(current_user)
-    end
 end

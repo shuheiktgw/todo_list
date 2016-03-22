@@ -1,4 +1,4 @@
-class GroupMembersController < ApplicationController
+class GroupMembersController < BaseGroupsController
   before_action :admin_required, except: :index
   before_action :member_only, only: :index
 
@@ -23,9 +23,14 @@ class GroupMembersController < ApplicationController
   end
 
   def destroy
-    current_group.members.destroy(User.find(params[:id]))
+    current_group.group_members.find_by(user_id: params[:id]).delete
     redirect_to :back, notice: "メンバーの登録を解除しました"
   end
+
+  private
+    def current_group
+      Group.find(params[:group_id])
+    end
 
 
 
