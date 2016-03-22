@@ -5,6 +5,8 @@ class Group < ActiveRecord::Base
 
 	def self.create_a_new_group(params, user)
 		group = new(params)
+		return group if group.invalid?
+
 		self.transaction do
 			group.created_by = user.id
 	    user.group_members.create!(group: group, role: :admin)

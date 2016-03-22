@@ -7,7 +7,7 @@ describe Group do
 	let(:user_group){Group.create_a_new_group(group_params, user)}
 	let(:other_user_group){Group.create_a_new_group(group_params, other_user)}
 
-	describe '#.create_a_new_goup' do
+	describe '.create_a_new_goup' do
 		it 'グループが登録できる' do
 			expect(Group.create_a_new_group(group_params, user)).to be_truthy
 		end
@@ -35,26 +35,19 @@ describe Group do
 			expect(other_user_group.admin?(user)).to be_falsey
 		end
 
-		it 'userが管理者でもオペレーターでなければfalseを返す' do
-			expect(other_user_group.admin?(user)).to be_falsey
-		end
+		it { expect(other_user_group.admin?(user)).to be_falsey }
 	end
 
 	describe '#member?' do
-		it 'userが管理者ならtrueを返す' do
-			expect(user_group.member?(user)).to be_truthy
-		end
+		it { expect(user_group.member?(user)).to be_truthy }
 
 		it 'userがオペレーターならtrueを返す' do
 			other_user.groups << user_group
 			expect(user_group.member?(other_user)).to be_truthy
 		end
 
-		it 'userが管理者でもオペレーターでなければfalseを返す' do
-			expect(other_user_group.member?(user)).to be_falsey
-		end
+		it { expect(other_user_group.member?(user)).to be_falsey }
 	end
-
 end
 
 

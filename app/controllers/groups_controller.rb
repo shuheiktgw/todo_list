@@ -11,7 +11,7 @@ class GroupsController < ApplicationController
 
   def create
     @group = Group.create_a_new_group(group_params, current_user)
-    if @group
+    if @group.errors.empty?
       redirect_to @group, notice: "新しいグループを作成しました"
     else
       redirect_to :back, notice: "グループの作成に失敗しました"
