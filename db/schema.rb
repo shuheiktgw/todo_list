@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20160320112726) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "group_members", force: :cascade do |t|
     t.integer  "user_id",                null: false
     t.integer  "group_id",               null: false
@@ -21,7 +24,7 @@ ActiveRecord::Schema.define(version: 20160320112726) do
     t.datetime "updated_at",             null: false
   end
 
-  add_index "group_members", ["user_id", "group_id"], name: "index_group_members_on_user_id_and_group_id", unique: true
+  add_index "group_members", ["user_id", "group_id"], name: "index_group_members_on_user_id_and_group_id", unique: true, using: :btree
 
   create_table "groups", force: :cascade do |t|
     t.string   "name",        null: false
@@ -43,7 +46,7 @@ ActiveRecord::Schema.define(version: 20160320112726) do
     t.integer  "group_id"
   end
 
-  add_index "tasks", ["group_id"], name: "index_tasks_on_group_id"
+  add_index "tasks", ["group_id"], name: "index_tasks_on_group_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -60,7 +63,8 @@ ActiveRecord::Schema.define(version: 20160320112726) do
     t.datetime "updated_at",                          null: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "tasks", "users"
 end

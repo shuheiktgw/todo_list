@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.2'
+gem 'pg', '0.15.1'
 gem 'devise'
 gem 'kaminari'
 gem 'enum_help'
