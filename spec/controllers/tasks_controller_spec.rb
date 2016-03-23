@@ -7,7 +7,7 @@ RSpec.describe TasksController, :type => :controller do
 
 
   before do
-    login_user user
+    login_user
     request.env["HTTP_REFERER"] = "where_i_came_from"
   end
 
