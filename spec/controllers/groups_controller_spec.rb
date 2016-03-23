@@ -1,47 +1,42 @@
 require 'rails_helper'
 
 RSpec.describe GroupsController, type: :controller do
+  let(:group_hash){attributes_for(:group)}
+  let(:user){create(:user)}
+  let(:group){create(:group, created_by: user.id)}
+
+  before do
+    login_user user
+    request.env["HTTP_REFERER"] = "where_i_came_from"
+  end
 
   describe "GET #new" do
-    it "returns http success" do
+    it "newテンプレートをレンダリングする" do
       get :new
-      expect(response).to have_http_status(:success)
+      expect(response).to render_template :new
     end
   end
 
-  describe "GET #create" do
-    it "returns http success" do
-      get :create
-      expect(response).to have_http_status(:success)
+  describe "POST #create" do
+    it "新しいグループをデータベースに登録する" do
+      expect{
+        post :create, group: group_hash
+      }.to change(Group, :count).by(1)
+    end
+
+    it "グループの作成に成功すると,articles#showへリダイレクトする" do
+      post :create, group: group_hash
+      expect(response).to redirect_to group_path(Group.last)
     end
   end
 
-  describe "GET #show" do
-    it "returns http success" do
-      get :show
-      expect(response).to have_http_status(:success)
+  describe "PATCH #update" do
+    it "@groupにリクエストされたグループをアサインする" do
+      get :show, id: group #forbiddenでアクセス出来ない
+      expect(assigns(:group)).to eq(group)
     end
-  end
 
-  describe "GET #edit" do
-    it "returns http success" do
-      get :edit
-      expect(response).to have_http_status(:success)
-    end
-  end
 
-  describe "GET #update" do
-    it "returns http success" do
-      get :update
-      expect(response).to have_http_status(:success)
-    end
-  end
 
-  describe "GET #destroy" do
-    it "returns http success" do
-      get :destroy
-      expect(response).to have_http_status(:success)
-    end
   end
-
 end
