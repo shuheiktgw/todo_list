@@ -23,6 +23,22 @@ describe Group do
 		it 'グループを作ると作成者が管理者になる' do
 			expect(user_group.group_members.find_by(user_id: user.id).admin?).to be_truthy
 		end
+
+		it "グループのバリデーションが失敗するとデータベースに何も登録されない" do
+			group_params.merge!(name: "")
+			expect{Group.create_a_new_group(group_params, user)}.not_to change{Group.count}
+		end
+
+		it "グループのバリデーションが失敗するとのerror属性に値が入る" do
+			group_params.merge!(name: "")
+			group = Group.create_a_new_group(group_params, user)
+			expect{group.errors}.to be_any
+		end
+
+		it "トランザクション内で例外が発生するとデータベースには何も登録されない" do
+			user = nil
+			expect{Group.create_a_new_group(group_params, user)}.not_to change{Group.count}
+		end
 	end
 
 	describe '#admin?' do
