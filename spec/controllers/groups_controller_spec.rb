@@ -2,11 +2,13 @@ require 'rails_helper'
 include Devise::TestHelpers
 
 RSpec.describe GroupsController, type: :controller do
+  let(:user){create(:user)}
   let(:group_hash){attributes_for(:group)}
-  let(:group){create(:group, created_by: controller.current_user.email)}
+  let(:group){create(:group, created_by: user.id)}
 
   before do
     request.env["HTTP_REFERER"] = "where_i_came_from"
+    sign_in user
   end
 
   describe "GET #new" do
@@ -17,7 +19,6 @@ RSpec.describe GroupsController, type: :controller do
   end
 
   describe "POST #create" do
-    login_user
     it "新しいグループをデータベースに登録する" do
       expect{
         post :create, group: group_hash
@@ -31,13 +32,15 @@ RSpec.describe GroupsController, type: :controller do
   end
 
   describe "PATCH #update" do
-    login_user
+
     it "@groupにリクエストされたグループをアサインする" do
-      gourp1 = Group.create_a_new_group(group_hash, controller.current_user)
+      group.members << user
+      user.group_members.find_by(group_id: group.id).admin!
       group_hash.merge!(name: 'hoge', description: 'hogehoge')
-      patch :update, id: group1, group: group_hash
-      expect(group1.name).to eq('hoge')
-      expect(group1.description).to eq('hogehoge')
+      patch :update, id: group, group: group_hash
+      group.reload
+      expect(group.name).to eq('hoge')
+      expect(group.description).to eq('hogehoge')
     end
   end
 end
