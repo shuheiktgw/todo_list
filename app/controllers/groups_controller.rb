@@ -36,7 +36,7 @@ class GroupsController < ApplicationController
 
   def destroy
     @group.destroy
-    redirect_to current_user, notice: "グループを削除しました"
+    redirect_to root_url notice: "グループを削除しました"
   end
 
   def members
@@ -47,7 +47,7 @@ class GroupsController < ApplicationController
   end
 
   def member_register
-    emails = Array(params[:members][:email].strip.split(','))
+    emails = Array(params[:members][:email].gsub(" ", "").split(','))
     if registered_emails = User.register_from_emails(emails, current_group)
       if registered_emails.nil?
         redirect_to :back, notice: "メンバーが登録に失敗しました"
