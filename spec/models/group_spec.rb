@@ -32,12 +32,13 @@ describe Group do
 		it "グループのバリデーションが失敗するとのerror属性に値が入る" do
 			group_params.merge!(name: "")
 			group = Group.create_a_new_group(group_params, user)
-			expect{group.errors}.to be_any
+			expect(group.errors.any?).to be_truthy
 		end
 
 		it "トランザクション内で例外が発生するとデータベースには何も登録されない" do
 			user = nil
-			expect{Group.create_a_new_group(group_params, user)}.not_to change{Group.count}
+			expect{Group.create_a_new_group(group_params, user)}.to raise_error NoMethodError
+			expect(Group.count).to eq(0)
 		end
 	end
 
