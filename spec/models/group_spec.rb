@@ -36,9 +36,9 @@ describe Group do
 		end
 
 		it "トランザクション内で例外が発生するとデータベースには何も登録されない" do
-			user = nil
-			expect{Group.create_a_new_group(group_params, user)}.to raise_error NoMethodError
+			expect{Group.create_a_new_group(group_params, nil)}.to raise_error NoMethodError
 			expect(Group.count).to eq(0)
+			expect(GroupMember.count).to eq(0)
 		end
 	end
 
