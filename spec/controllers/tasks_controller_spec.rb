@@ -1,5 +1,4 @@
 require 'rails_helper'
-include Devise::TestHelpers
 
 RSpec.describe TasksController, :type => :controller do
   let(:task){create(:task)}
@@ -29,7 +28,8 @@ RSpec.describe TasksController, :type => :controller do
 
   describe 'PATCH #done_registration' do
     it "タスクのステータスをdoneに変更する" do
-      expect{patch :done_registration, checked_id: [task.id]}.to change{task.reload.status}.from('not_yet').to('done')
+      expect{patch :done_registration, checked_id: [task.id]}.to
+      change{task.reload.status}.from('not_yet').to('done')
     end
 
     it "複数のタスクのステータスをdoneにする" do
@@ -37,7 +37,8 @@ RSpec.describe TasksController, :type => :controller do
       task2 = create(:task)
       user.tasks << task1
       user.tasks << task2
-      expect{patch :done_registration, checked_id: [task.id, task1.id, task2.id]}.to change{task.reload.status}.from('not_yet').to('done')
+      expect{patch :done_registration, checked_id: [task.id, task1.id, task2.id]}.to
+      change{task.reload.status}.from('not_yet').to('done')
     end
 
     it "タスクが選択されていなければ元のページにリダイレクされる" do

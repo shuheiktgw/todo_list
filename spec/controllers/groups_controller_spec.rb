@@ -1,5 +1,4 @@
 require 'rails_helper'
-include Devise::TestHelpers
 
 RSpec.describe GroupsController, type: :controller do
   let(:user){create(:user)}
@@ -63,7 +62,7 @@ RSpec.describe GroupsController, type: :controller do
   end
 
   describe "GET #members" do
-    it "@membersにリクエストされたメンバーをアサインする" do
+    it "idに指定したgroupのmembersを取得する" do
       get :members, id: group
       expect(assigns(:members)).to eq(group.members)
     end
@@ -110,7 +109,7 @@ RSpec.describe GroupsController, type: :controller do
   end
 
   describe "PATCH #member_deadmin" do
-    it "メンバーを管理者として登録する" do
+    it "メンバーの管理者登録を解除すること" do
       expect{
         patch :member_deadmin, id: group, member_id: user.id
       }.to change{group.group_members.admin.size}.by(-1)
