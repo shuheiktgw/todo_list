@@ -3,6 +3,8 @@ class TaskTracker
     @tasks = task_owner.tasks
   end
 
+#Dateごとの形に成形したリレーショナルオブジェクト作る→Hashに格納
+
   def task_tracking
     duration = ((Date.today-30)..Date.today)
     tasks_hash = {}
@@ -12,9 +14,21 @@ class TaskTracker
     tasks_hash
   end
 
-  def number_of_not_yet_tasks(date)
-    @tasks.not_yet_then(date).count
+  def get_the_number_of_done_tasks_by_date
+    @tasks.group_by_day(:done_date, "count")
   end
+
+  def get_the_number_of_added_tasks_by_date
+    @tasks.group_by_day(:created_at, "count")
+  end
+
+  def get_the_number_of_not_yet_tasks
+    @tasks.select
+  end
+
+
+
+
 
   def number_of_done_tasks(date)
     @tasks.done_until_then(date).count
