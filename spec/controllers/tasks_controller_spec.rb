@@ -22,7 +22,7 @@ RSpec.describe TasksController, :type => :controller do
   describe 'POST #create' do
     it "新しいタスクを登録すると元のページにリダイレクされる" do
       expect{post :create, task: task_hash}.to change{user.tasks.count}.by(1)
-      response.should redirect_to "where_i_came_from"
+      expect(response).to redirect_to "where_i_came_from"
     end
   end
 
