@@ -38,7 +38,6 @@ class GroupsController < BaseGroupsController
     redirect_to :new_group, notice: "グループを削除しました"
   end
 
-
   private
     def group_params
       params.require(:group).permit(:name, :description)
