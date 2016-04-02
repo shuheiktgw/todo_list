@@ -7,8 +7,8 @@ Rails.application.routes.draw do
   end
 
   resources :groups do
-    member {patch "member_register", "member_deregister", "member_admin", "member_deadmin"}
-    member {get "member_search", "members"}
+    resources :group_members, only: [:index, :new, :create, :destroy]
+    resource :group_admins, only: :update
   end
 
 
