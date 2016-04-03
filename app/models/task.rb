@@ -15,21 +15,19 @@ class Task < ActiveRecord::Base
 	scope :rescently_done,   ->{ done.where(arel_table[:updated_at].gt(3.days.ago)) }
 	scope :individual_tasks, ->{ where(group_id: nil) }
 
-	scope :total_then, ->(date){ where("created_at <= ?", date+1) } #dateはその日の00:00:00に同じ
-	scope :not_yet_then, ->(date){ where("created_at <= ? and (done_date > ? or done_date IS NULL)", date+1, date+1) }
-	scope :done_until_then, ->(date){ where("created_at <= ? and done_date <= ?", date+1, date+1) }
-	scope :added_then, ->(date){ where("? <= created_at and created_at <= ?", date, date+1) }
-
-
 
 	def self.done_multiple(user, ids)
 		self.transaction do
 			ids.each do |id|
+<<<<<<< HEAD
 				done_task = user.tasks.find(id)
 				done_task.status = :done
 				done_task.done_date = Date.today
 
 				done_task.save!
+=======
+				user.tasks.find(id).done!
+>>>>>>> parent of 877083b... add task tracking features
 			end
 		end
 	end
