@@ -21,9 +21,12 @@ module TodoList
     config.i18n.default_locale = :ja
 <<<<<<< HEAD
     config.time_zone = 'Tokyo'
+<<<<<<< HEAD
     config.active_record.default_timezone = :local
 =======
 >>>>>>> parent of 877083b... add task tracking features
+=======
+>>>>>>> parent of 8a1bce5... fixing tasktracker
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true

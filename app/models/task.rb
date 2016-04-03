@@ -21,8 +21,8 @@ class Task < ActiveRecord::Base
 			ids.each do |id|
 <<<<<<< HEAD
 				done_task = user.tasks.find(id)
-				done_task.status = :done
-				done_task.done_date = Date.today
+				done_task.done!
+				done_task.done_date = Timewithzon.today
 
 				done_task.save!
 =======

@@ -7,7 +7,6 @@ gem 'pg', '0.15.1'
 gem 'devise'
 gem 'kaminari'
 gem 'enum_help'
-gem 'dateslices'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use SCSS for stylesheets
