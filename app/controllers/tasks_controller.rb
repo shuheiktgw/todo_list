@@ -5,6 +5,7 @@ class TasksController < ApplicationController
 		@task = Task.new
 		@tasks_should_work_on = current_user.tasks.should_work_on.individual_tasks.order(urgency: :DESC, importance: :DESC).page(params[:page])
 		@tasks_rescently_done = current_user.tasks.rescently_done.individual_tasks
+		@tasks_tracking = TaskTracker.new(current_user).task_tracking
 	end
 
 	def create
