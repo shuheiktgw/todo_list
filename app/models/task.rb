@@ -19,15 +19,11 @@ class Task < ActiveRecord::Base
 	def self.done_multiple(user, ids)
 		self.transaction do
 			ids.each do |id|
-<<<<<<< HEAD
 				done_task = user.tasks.find(id)
-				done_task.done!
-				done_task.done_date = Timewithzon.today
+				done_task.status = done
+				done_task.done_date = Date.today
 
 				done_task.save!
-=======
-				user.tasks.find(id).done!
->>>>>>> parent of 877083b... add task tracking features
 			end
 		end
 	end
