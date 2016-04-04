@@ -3,14 +3,18 @@ class Group < ActiveRecord::Base
 	has_many :group_members, dependent: :destroy
 	has_many :members, through: :group_members, source: :user
 
+	validates :name, presence: true
+
 	def self.create_a_new_group(params, user)
 		group = new(params)
+		return group if group.invalid?
+
 		self.transaction do
 			group.created_by = user.id
 	    user.group_members.create!(group: group, role: :admin)
 	    group.save!
 	  end
-	  return group
+	  group
 	end
 
 	def admin?(user)
