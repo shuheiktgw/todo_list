@@ -7,7 +7,7 @@ class TaskTracker
     duration = ((Date.today-30)..Date.today)
     tasks_hash = {}
     duration.each do |date|
-      tasks_hash[date] = [number_of_not_yet_tasks(date), number_of_done_tasks(date), ratio_of_not_yet_tasks(date), number_of_added_tasks(date)]
+       tasks_hash[date] = [number_of_not_yet_tasks(date), number_of_done_tasks(date), ratio_of_not_yet_tasks(date), number_of_added_tasks(date)]
     end
     tasks_hash
   end
