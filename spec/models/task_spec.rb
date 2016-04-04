@@ -23,7 +23,7 @@ describe Task do
 		end
 
 		it "どれかが失敗するとすべてのステータスが変更されない" do
-			expect{Task.done_multiple(user, [task1.id, 0, task3.id])}.to raise_error
+			expect{Task.done_multiple(user, [task1.id, 0, task3.id])}.to raise_error ActiveRecord::RecordNotFound
 			expect(task1.reload.not_yet?).to be true
 			expect(task3.reload.not_yet?).to be true
 		end

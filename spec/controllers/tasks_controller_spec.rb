@@ -22,14 +22,14 @@ RSpec.describe TasksController, :type => :controller do
   describe 'POST #create' do
     it "新しいタスクを登録すると元のページにリダイレクされる" do
       expect{post :create, task: task_hash}.to change{user.tasks.count}.by(1)
-      response.should redirect_to "where_i_came_from"
+      expect(response).to redirect_to "where_i_came_from"
     end
   end
 
   describe 'PATCH #done_registration' do
     it "タスクのステータスをdoneに変更する" do
-      expect{patch :done_registration, checked_id: [task.id]}.to
-      change{task.reload.status}.from('not_yet').to('done')
+      expect{patch :done_registration, checked_id: [task.id]}.to (
+        change{task.reload.status}.from('not_yet').to('done'))
     end
 
     it "複数のタスクのステータスをdoneにする" do
@@ -37,8 +37,8 @@ RSpec.describe TasksController, :type => :controller do
       task2 = create(:task)
       user.tasks << task1
       user.tasks << task2
-      expect{patch :done_registration, checked_id: [task.id, task1.id, task2.id]}.to
-      change{task.reload.status}.from('not_yet').to('done')
+      expect{patch :done_registration, checked_id: [task.id, task1.id, task2.id]}.to (
+        change{task.reload.status}.from('not_yet').to('done'))
     end
 
     it "タスクが選択されていなければ元のページにリダイレクされる" do
